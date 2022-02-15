@@ -2,11 +2,15 @@ import { useEffect, useState } from "react";
 import {
   AppShell,
   Button,
-  Header,
   Input,
   Navbar,
   PasswordInput,
   TextInput,
+  Text,
+  Center,
+  Container,
+  Grid,
+  Avatar,
 } from "@mantine/core";
 import { useForm } from "@mantine/hooks";
 import {
@@ -19,6 +23,7 @@ import { getFirestore, setDoc, doc } from "firebase/firestore";
 import Head from "next/head";
 import Link from "next/link";
 import { useUser } from "../context/userContext";
+import Header from "../components/Header";
 
 const doCreateUserWithEmailAndPassword = (email: string, password: string) =>
   createUserWithEmailAndPassword(getAuth(), email, password);
@@ -88,16 +93,7 @@ export default function Home() {
   return (
     <AppShell
       padding="md"
-      navbar={
-        <Navbar width={{ base: 300 }} height={500} padding="xs">
-          {/* Navbar content */}
-        </Navbar>
-      }
-      header={
-        <Header height={60} padding="xs">
-          Taco Truck
-        </Header>
-      }
+      header={<Header />}
       styles={(theme) => ({
         main: {
           backgroundColor:
