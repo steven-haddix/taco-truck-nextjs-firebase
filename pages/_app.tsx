@@ -2,7 +2,13 @@ import { AppShell, Header, MantineProvider, Navbar } from "@mantine/core";
 import UserProvider from "../context/userContext";
 
 // Custom App to wrap it with context provider
-export default function App({ Component, pageProps }) {
+export default function App({
+  Component,
+  pageProps,
+}: {
+  Component: any;
+  pageProps: any;
+}) {
   return (
     <UserProvider>
       <MantineProvider

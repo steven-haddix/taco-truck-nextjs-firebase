@@ -1,7 +1,7 @@
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import admin from "../firebase/nodeApp";
 
-export const getProfileData = async (username) => {
+export const getProfileData = async (username: string) => {
   const db = admin.firestore();
   const profileCollection = db.collection("profile");
   const profileDoc = await profileCollection.doc(username).get();
