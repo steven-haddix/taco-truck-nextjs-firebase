@@ -1,5 +1,5 @@
-type Configuration = {
-  slack_api_key: string;
-};
+interface Configuration {
+  slack_hook: string;
+}
 
 export default Configuration;
