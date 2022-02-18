@@ -1,4 +1,3 @@
-import { Timestamp } from "firebase/firestore";
 import admin from "./nodeApp";
 
 interface ISlackConfiguration {
@@ -48,7 +47,7 @@ interface IPointEvent {
   sender: string;
   receiver: string;
   receiverSlackId: string;
-  timestamp?: Timestamp;
+  timestamp?: admin.firestore.Timestamp;
 }
 
 interface IPointUpdate {
@@ -81,13 +80,6 @@ export const updatePoints = async ({ teamId, userId, event }: IPointUpdate) => {
     },
     ...event,
   });
-};
-
-const getStartOfToday = () => {
-  const now = new Date();
-  now.setHours(5, 0, 0, 0); // +5 hours for Eastern Time
-  const timestamp = admin.firestore.Timestamp.fromDate(now);
-  return timestamp; // ex. 1631246400
 };
 
 function getMonday(d: Date) {
