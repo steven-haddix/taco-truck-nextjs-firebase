@@ -25,7 +25,7 @@ export default async function handler(
   });
 
   // Taco handler needs a person and a taco emoji to be triggered
-  if (tacoMentions.length < 1 || userMention < 1) {
+  if (!tacoMentions || tacoMentions.length < 1 || userMention < 1) {
     console.log("No taco mentions or user mentions.");
     return res.status(200).json({});
   }
