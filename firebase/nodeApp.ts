@@ -1,8 +1,7 @@
 import * as admin from "firebase-admin";
 
-let appInternal: admin.app.App | undefined = undefined;
 if (!admin.apps.length) {
-  appInternal = admin.initializeApp({
+  admin.initializeApp({
     credential: admin.credential.cert({
       projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
       clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
@@ -12,5 +11,4 @@ if (!admin.apps.length) {
   });
 }
 
-export const app = appInternal;
 export default admin;

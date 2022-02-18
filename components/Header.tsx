@@ -15,6 +15,7 @@ import { useUser } from "../context/userContext";
 import IUser from "../types/IUser";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import SlackButton from "./SlackButton";
 
 const Authenticated = () => {
   const router = useRouter();
@@ -70,8 +71,10 @@ const HeaderComponent = () => {
     <Header height={60} padding="xs">
       <Container size="xl">
         <Grid grow>
-          {!loadingUser && <Grid.Col span={user ? 1 : 2} />}
-          <Grid.Col span={!loadingUser && user ? 10 : 8}>
+          <Grid.Col span={2}>
+            {!loadingUser && user && <SlackButton />}
+          </Grid.Col>
+          <Grid.Col span={!loadingUser && user ? 9 : 8}>
             <Center>
               <Text size="xl"> Taco Truck</Text>
             </Center>

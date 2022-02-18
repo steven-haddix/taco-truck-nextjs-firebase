@@ -21,8 +21,6 @@ const SignUpPage = () => {
     email: string,
     password: string
   ) => {
-    const auth = getAuth();
-
     try {
       // TODO: create generic API handler
       const response = await fetch("/api/sign-up", {
