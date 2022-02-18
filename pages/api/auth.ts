@@ -1,9 +1,10 @@
 import { doc, setDoc } from "firebase/firestore";
 import { NextApiRequest, NextApiResponse } from "next";
+import { auth } from "firebase-admin";
 
 import admin from "../../firebase/nodeApp";
+import { saveUpdateSlackConfiguration } from "../../firebase/nodeClient";
 import nodeXHRForm from "../../fetchData/nodeXHRForm";
-import { auth } from "firebase-admin";
 
 export default async function handler(
   req: NextApiRequest,
@@ -58,24 +59,12 @@ export default async function handler(
   }
 
   // Save Access Token to Firestore Database
-  const db = admin.firestore();
-  const accounts = db.collection(`accounts/${user.uid}/configuration`);
-  const accountDoc = await accounts.doc("slack").get();
-  if (!accountDoc.exists) {
-    accountDoc.ref.set({
-      app_id: authResponseJson.app_id,
-      access_token: authResponseJson.access_token,
-      team: authResponseJson.team,
-      incoming_webhook: authResponseJson.incoming_webhook,
-    });
-  } else {
-    accountDoc.ref.update({
-      app_id: authResponseJson.app_id,
-      access_token: authResponseJson.access_token,
-      team: authResponseJson.team,
-      incoming_webhook: authResponseJson.incoming_webhook,
-    });
-  }
+  saveUpdateSlackConfiguration(user.uid, {
+    app_id: authResponseJson.app_id,
+    access_token: authResponseJson.access_token,
+    team: authResponseJson.team,
+    incoming_webhook: authResponseJson.incoming_webhook,
+  });
 
   return res.status(200).json({});
 }
