@@ -13,11 +13,10 @@ import {
   signInWithEmailAndPassword,
   signOut,
 } from "firebase/auth";
-
-const doSignInWithEmailAndPassword = (email: string, password: string) =>
-  signInWithEmailAndPassword(getAuth(), email, password);
+import { useRouter } from "next/router";
 
 const SignInPage = () => {
+  const router = useRouter();
   const form = useForm({
     initialValues: {
       email: "",
@@ -28,13 +27,18 @@ const SignInPage = () => {
       email: (value) => /^\S+@\S+$/.test(value),
     },
   });
+
+  const signIn = async (email: string, password: string) => {
+    await signInWithEmailAndPassword(getAuth(), email, password);
+    router.push("/account/dashboard");
+  };
   return (
     <Container size="sm">
       <Paper padding="lg" mt="xl">
         <Title>Sign In</Title>
         <form
           onSubmit={form.onSubmit((values) =>
-            doSignInWithEmailAndPassword(values.email, values.password)
+            signIn(values.email, values.password)
           )}
         >
           <TextInput
