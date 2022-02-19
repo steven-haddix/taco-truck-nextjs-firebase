@@ -25,6 +25,7 @@ export interface IApiHandler {
 }
 
 export function apiHandler(handler: IApiHandler) {
+  // @ts-ignore
   return async (req: NextApiRequest, res: NextApiResponse) => {
     const method = req.method?.toLowerCase();
 
