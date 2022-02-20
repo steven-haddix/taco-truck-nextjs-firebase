@@ -34,10 +34,11 @@ export default function UserContextComp({ children }: { children: ReactNode }) {
       try {
         if (user) {
           // User is signed in.
+          const token = await user.getIdToken();
           const { uid, displayName, email, photoURL } = user;
           // You could also look for the user doc in your Firestore (if you have one):
           // const userDoc = await firebase.firestore().doc(`users/${uid}`).get()
-          setUser({ uid, displayName, email, photoURL });
+          setUser({ uid, displayName, email, photoURL, token });
         } else setUser(undefined);
       } catch (error) {
         // Most probably a connection error. Handle appropriately.

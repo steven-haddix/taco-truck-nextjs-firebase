@@ -28,6 +28,9 @@ export default function App({
         theme={{
           /** Put your mantine theme override here */
           colorScheme: "dark",
+          fontSizes: {
+            xl: 32,
+          },
         }}
       >
         <AppShell

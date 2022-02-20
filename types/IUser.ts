@@ -3,4 +3,5 @@ export default interface IUser {
   displayName: string | undefined | null;
   email: string | undefined | null;
   photoURL: string | undefined | null;
+  token: string | undefined | null;
 }

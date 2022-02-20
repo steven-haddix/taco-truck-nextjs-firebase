@@ -1,4 +1,37 @@
+import { NextApiRequest } from "next";
+import IPointEvent from "../types/IPointEvent";
+import Totals from "../types/IPointTotals";
 import admin from "./nodeApp";
+
+export const authenticateRequest = async (
+  req: NextApiRequest
+): Promise<admin.auth.DecodedIdToken> => {
+  const { authorization } = req.headers;
+
+  // No authorization header so they're not logged in
+  if (!authorization) {
+    throw "Authorization header required";
+  }
+
+  const idToken = authorization.replace("Bearer ", "");
+
+  return authenticateUserToken(idToken);
+};
+
+export const authenticateUserToken = async (
+  idToken: string
+): Promise<admin.auth.DecodedIdToken> => {
+  try {
+    return await admin.auth().verifyIdToken(idToken);
+  } catch (err) {
+    if (err.errorInfo.code === "auth/id-token-expired") {
+      console.error("Firebase auth/id-token-expired");
+      throw "Auth token expired";
+    }
+    console.log(err);
+    throw "There was an error while authenticating the session";
+  }
+};
 
 interface ISlackConfiguration {
   app_id: string;
@@ -40,15 +73,6 @@ export const getSlackConfiguration = async (
   const configurationQuery = await configurationCollection.doc("slack").get();
   return configurationQuery.data();
 };
-
-interface IPointEvent {
-  eventId: string;
-  points: number;
-  sender: string;
-  receiver: string;
-  receiverSlackId: string;
-  timestamp?: admin.firestore.Timestamp;
-}
 
 interface IPointUpdate {
   teamId: string;
@@ -105,4 +129,23 @@ export const getScoreEvents = async (
     .get();
 
   return eventsCollectionQuery.docs.map((doc) => doc.data());
+};
+
+export const getScoreTotals = async (teamId: string): Promise<any> => {
+  const events = await getScoreEvents(teamId);
+  // Aggregate events into totals by user
+  const userScores = events.reduce((acc, event) => {
+    const currTotal = acc[event.receiver] ? acc[event.receiver] : 0;
+    return {
+      ...acc,
+      ...{
+        [event.receiver]: currTotal + event.points,
+      },
+    };
+  }, {} as Totals);
+
+  return {
+    scores: userScores,
+    events,
+  };
 };

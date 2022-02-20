@@ -24,7 +24,7 @@ const Authenticated = () => {
     router.push("/");
   };
   return (
-    <Center>
+    <>
       <Group position="center">
         <Menu
           placement="start"
@@ -43,13 +43,13 @@ const Authenticated = () => {
           </Menu.Item>
         </Menu>
       </Group>
-    </Center>
+    </>
   );
 };
 
 const UnAuthenticated = () => {
   return (
-    <Center>
+    <>
       <Link href="/account/sign-in" passHref>
         <Button mr="lg" component="a">
           Login
@@ -60,7 +60,7 @@ const UnAuthenticated = () => {
           Sign Up
         </Button>
       </Link>
-    </Center>
+    </>
   );
 };
 
@@ -68,25 +68,31 @@ const HeaderComponent = () => {
   const { user, loadingUser } = useUser();
 
   return (
-    <Header height={60} padding="xs">
+    <Header height="auto" padding="xs">
       <Container size="xl">
         <Grid grow>
           <Grid.Col span={2}>
-            {!loadingUser && user && <SlackButton />}
+            <Center style={{ height: "100%" }}>
+              {!loadingUser && user && <SlackButton />}
+            </Center>
           </Grid.Col>
-          <Grid.Col span={!loadingUser && user ? 9 : 8}>
-            <Center>
+          <Grid.Col span={!loadingUser && user ? 8 : 8}>
+            <Center style={{ height: "100%" }}>
               <Text size="xl"> Taco Truck</Text>
             </Center>
           </Grid.Col>
           {!loadingUser && user && (
-            <Grid.Col span={1}>
-              <Authenticated />
+            <Grid.Col span={2}>
+              <Center style={{ height: "100%" }}>
+                <Authenticated />
+              </Center>
             </Grid.Col>
           )}
           {!loadingUser && !user && (
             <Grid.Col span={2}>
-              <UnAuthenticated />
+              <Center style={{ height: "100%" }}>
+                <UnAuthenticated />
+              </Center>
             </Grid.Col>
           )}
         </Grid>
