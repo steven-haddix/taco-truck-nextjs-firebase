@@ -22,24 +22,38 @@ const SignInPage = () => {
       email: "",
       password: "",
     },
-
     validationRules: {
       email: (value) => /^\S+@\S+$/.test(value),
+      password: (value) => value.trim().length > 0
+    },
+    errorMessages: {
+      email: "Invalid email",
+      password: "Invalid password",
     },
   });
 
   const signIn = async (email: string, password: string) => {
-    await signInWithEmailAndPassword(getAuth(), email, password);
-    router.push("/account/dashboard");
+    signInWithEmailAndPassword(getAuth(), email, password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+        console.log(`Logged in user: ${user}`)
+        router.push("/account/dashboard");
+      })
+      .catch((error) => {
+        form.setErrors({email: true, password: true});
+        form.setFieldError("password", "Email not found or password invalid");
+      });
   };
+
   return (
     <Container size="sm">
       <Paper padding="lg" mt="xl">
         <Title>Sign In</Title>
         <form
-          onSubmit={form.onSubmit((values) =>
-            signIn(values.email, values.password)
-          )}
+          onSubmit={form.onSubmit(
+            (values) => signIn(values.email, values.password))
+          }
+          onChange={form.resetErrors}
         >
           <TextInput
             required
