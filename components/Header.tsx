@@ -1,5 +1,6 @@
 import {
   Avatar,
+  Box,
   Button,
   Center,
   Container,
@@ -7,6 +8,7 @@ import {
   Group,
   Header,
   Menu,
+  Tabs,
   Text,
 } from "@mantine/core";
 import { VscSignOut } from "react-icons/vsc";
@@ -16,6 +18,9 @@ import IUser from "../types/IUser";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import SlackButton from "./SlackButton";
+import { useState } from "react";
+import { route } from "next/dist/server/router";
+import AccountHeader from "./AccountHeader";
 
 const Authenticated = () => {
   const router = useRouter();
@@ -49,32 +54,33 @@ const Authenticated = () => {
 
 const UnAuthenticated = () => {
   return (
-    <>
-      <Link href="/account/sign-in" passHref>
-        <Button mr="lg" component="a">
-          Login
-        </Button>
-      </Link>
-      <Link href="/account/sign-up" passHref>
-        <Button component="a" variant="outline">
-          Sign Up
-        </Button>
-      </Link>
-    </>
+    <Grid>
+      <Grid.Col span={6}>
+        <Link href="/account/sign-in" passHref>
+          <Button mr="lg" component="a">
+            Login
+          </Button>
+        </Link>
+      </Grid.Col>
+      <Grid.Col span={6}>
+        <Link href="/account/sign-up" passHref>
+          <Button component="a" variant="outline">
+            Sign Up
+          </Button>
+        </Link>
+      </Grid.Col>
+    </Grid>
   );
 };
 
 const HeaderComponent = () => {
   const { user, loadingUser } = useUser();
-
   return (
-    <Header height="auto" padding="xs">
-      <Container size="xl">
+    <Header height="auto">
+      <Container size="lg" mt={"lg"}>
         <Grid grow>
-          <Grid.Col span={2}>
-            <Center style={{ height: "100%" }}>
-              {!loadingUser && user && <SlackButton />}
-            </Center>
+          <Grid.Col span={2} sx={{ display: "flex", alignItems: "center" }}>
+            {!loadingUser && user && <SlackButton />}
           </Grid.Col>
           <Grid.Col span={!loadingUser && user ? 8 : 8}>
             <Center style={{ height: "100%" }}>
@@ -82,21 +88,32 @@ const HeaderComponent = () => {
             </Center>
           </Grid.Col>
           {!loadingUser && user && (
-            <Grid.Col span={2}>
-              <Center style={{ height: "100%" }}>
-                <Authenticated />
-              </Center>
+            <Grid.Col
+              span={2}
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "flex-end",
+              }}
+            >
+              <Authenticated />
             </Grid.Col>
           )}
           {!loadingUser && !user && (
-            <Grid.Col span={2}>
-              <Center style={{ height: "100%" }}>
-                <UnAuthenticated />
-              </Center>
+            <Grid.Col
+              span={2}
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "flex-end",
+              }}
+            >
+              <UnAuthenticated />
             </Grid.Col>
           )}
         </Grid>
       </Container>
+      <AccountHeader />
     </Header>
   );
 };
