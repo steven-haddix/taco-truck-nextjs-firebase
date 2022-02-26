@@ -1,5 +1,6 @@
 import {
   Avatar,
+  Box,
   Button,
   Center,
   Container,
@@ -53,18 +54,22 @@ const Authenticated = () => {
 
 const UnAuthenticated = () => {
   return (
-    <>
-      <Link href="/account/sign-in" passHref>
-        <Button mr="lg" component="a">
-          Login
-        </Button>
-      </Link>
-      <Link href="/account/sign-up" passHref>
-        <Button component="a" variant="outline">
-          Sign Up
-        </Button>
-      </Link>
-    </>
+    <Grid>
+      <Grid.Col span={6}>
+        <Link href="/account/sign-in" passHref>
+          <Button mr="lg" component="a">
+            Login
+          </Button>
+        </Link>
+      </Grid.Col>
+      <Grid.Col span={6}>
+        <Link href="/account/sign-up" passHref>
+          <Button component="a" variant="outline">
+            Sign Up
+          </Button>
+        </Link>
+      </Grid.Col>
+    </Grid>
   );
 };
 
@@ -95,10 +100,15 @@ const HeaderComponent = () => {
             </Grid.Col>
           )}
           {!loadingUser && !user && (
-            <Grid.Col span={2}>
-              <Center style={{ height: "100%" }}>
-                <UnAuthenticated />
-              </Center>
+            <Grid.Col
+              span={2}
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "flex-end",
+              }}
+            >
+              <UnAuthenticated />
             </Grid.Col>
           )}
         </Grid>
