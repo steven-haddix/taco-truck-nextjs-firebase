@@ -1,5 +1,8 @@
-interface Configuration {
-  slack_hook: string;
+interface IConfiguration {
+  team: {
+    id: string;
+    name: string;
+  };
 }
 
-export default Configuration;
+export default IConfiguration;
